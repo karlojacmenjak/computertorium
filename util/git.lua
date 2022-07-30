@@ -6,7 +6,6 @@ repository = "zpqrtbnk/test-repo/"
 
 local function setup()
     --print(textutils.serialize(settings.getNames()))
-    
 end
 
 function version()
@@ -15,6 +14,12 @@ end
 
 
 function grab(filepath)
+    get_response = http.get("https://github.com/zpqrtbnk/test-repo/blob/master/test.txt")
+    for k, v in pairs(get_response) do
+        print(k,v)
+    end
+    print(get_response["getResponseCode"]())
+    get_response["close"]()
     shell.run("wget", git_url..repository..filepath)
 end
 
