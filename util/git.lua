@@ -12,14 +12,21 @@ function version()
     print("Git version 0.0.1")
 end
 
-
-function grab(filepath)
-    get_response = http.get("https://github.com/zpqrtbnk/test-repo/blob/master/test.txt")
+function list()
+    get_response = http.get("https://api.github.com/repos/zpqrtbnk/test-repo/contents")
     for k, v in pairs(get_response) do
         print(k,v)
     end
-    print(get_response["getResponseCode"]())
+    print(textutils.serialize(textutils.unserializeJSON(get_response["readAll"]())))
+    --print(textutils.serialize(get_response["readAll"]())) 
+    local file = fs.open("out.txt", "w")
+    file.write(get_response["readAll"]())
+    file.close()
     get_response["close"]()
+end
+
+function grab(filepath)
+    filepath = filepath or ""
     shell.run("wget", git_url..repository..filepath)
 end
 
