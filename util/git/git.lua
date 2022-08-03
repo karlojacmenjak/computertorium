@@ -1,15 +1,34 @@
 --https://docs.github.com/en/rest/repos/contents
 ccrings = require("cc.strings")
-easings = require("easings")
 args = {...}
 
 git_api = {link = function (repo,folder) return string.format("https://api.github.com/repos/%s/contents/%s",repo, folder) end}
 git_url = "https://raw.githubusercontent.com/"
 repository = "zpqrtbnk/test-repo"
 
-local function setup()
+
+
+local function setup(repo)
+    term.setPaletteColour(colors.black, 0x333)
+    term.setPaletteColour(colors.purple,0x6e5494)
+    term.setPaletteColour(colors.gray,0xf5f5f5)
+    term.setPaletteColour(colors.orange,0xc9510c)
+    term.setPaletteColour(colors.red,0xbd2c00)
+    term.setPaletteColour(colors.green,0x6cc644)
+    term.setPaletteColour(colors.blue,0x4078c0)
+    term.setPaletteColour(colors.white,0xfafafa)
+    term.clear() 
+    term.setTextColour(colors.blue)
+    term.write(string.char(248).." "..repo)
+    print()
+    term.setBackgroundColour(colors.black)
+    term.setTextColour(colors.gray)
+end
+
+function gui()
     folder = folder or ""
     get_response = http.get(git_api["link"](repository,folder))
+    setup(repository)
     for k, v in pairs(get_response) do
         print(k,v)
     end
@@ -49,7 +68,7 @@ function list(repo, folder)
                 end
             end
         end
-        sleep(easings.easeInCirc((k/#repo_files))/2)
+        sleep(0.05)
     end
     get_response["close"]()
 end
@@ -66,7 +85,7 @@ function gcall(command, parameter)
     end
 end
 
---setup()
+--gui()
 
 for key, value in pairs(args) do
     if value ~= nil then
